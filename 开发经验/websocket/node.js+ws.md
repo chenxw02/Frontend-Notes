@@ -24,6 +24,8 @@ const ws_server = new wsServer({
 
 ## 监听ws请求
 
+使用on request，为每个请求连接的客户端创建一个新的ws实例，隔离各客户端之间的信息
+
 ```js
 ws_server.on('request', (request) => {
   const connection = request.accept();
@@ -40,6 +42,9 @@ ws_server.on('request', (request) => {
   };
 
   handle_connection(ws);
+    
+  // 可在此分配各个ws实例私有的数据结构（属性），可在此ws实例的方法中访问
+  let data = [];
 });
 ```
 
@@ -65,5 +70,8 @@ const handle_message = (ws, message_from_client) => {
   const data_from_client = message_from_client.toString('utf8');
   // 转换为json(object) --可选
   const json_from_client = JSON.parse(data_from_client);
+    
+  // 在ws实例的方法内访问其属性
+  ws.data.push(json_from_client);
 };
 ```
