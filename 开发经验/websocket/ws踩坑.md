@@ -16,8 +16,6 @@ ws.on('message', (message_from_client) => {
 });
 ```
 
-
-
 ## 中文需要解码
 
 如果需要使用ws传输中文字符，需要进行解码
@@ -25,8 +23,6 @@ ws.on('message', (message_from_client) => {
 ```js
 const data = message.toString('uft8');
 ```
-
-
 
 ## 每个通道只能有一个listener
 
