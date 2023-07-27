@@ -45,8 +45,6 @@ let name = person.name;
 let name = person["name"];  // 必须是属性名的字符串形式
 ```
 
-
-
 ## 传递可选参数
 
 ```JS
