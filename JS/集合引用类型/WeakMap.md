@@ -76,7 +76,7 @@ function exampleWithWeakMap() {
 
 ## 不可迭代键
 
-`weakMap` 中的键值对在任何时候都可能被销毁，所以它不提供迭代器（也不提供 `clear()` 方法）
+`weakMap` 中的键值对在任何时候都可能被销毁，所以它不提供迭代器（也不提供 `clear()` 方法），且迭代方法可能阻碍垃圾回收
 
 ## 使用
 
@@ -195,7 +195,7 @@ const loginButton = document.querySelector('#login');
 m.set(loginButton, {disabled: true});
 ```
 
-在这个节点被 DOM 树中被删除后，`map` 中的引用仍然存在，只有将其显式地删除或 `Map` 本身被销毁时，`map` 中的引用才会被回收
+在这个节点被 DOM 树中被删除后，`Map` 中的引用仍然存在，只有将其显式地删除或 `Map` 本身被销毁时，`Map` 中的引用才会被回收
 
 ```js
 const wm = new WeakMap();

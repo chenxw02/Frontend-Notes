@@ -56,7 +56,7 @@ const m1 = new Map().set("Alice", 85);
 
 ### 删除
 
-* `delete()` 接收一个参数，作为要删除的键值对的键
+* `delete()` 接收一个参数，作为要删除的键值对的键；有这个键值对返回 `true`， 否则返回 `false`
 * `clear()` 不接收参数，删除所有键值对
 
 ```js
@@ -141,7 +141,10 @@ console.log(myMap.get(key3)); // 输出："NaN value"，因为 key3 和存储时
 
 ## 顺序与迭代
 
-`map` 实例会维护键值对的顺序，可以按照顺序进行迭代操作
+`Map` 实例会维护键值对的顺序，可以按照顺序进行迭代操作
+
+* `Map` 提供的迭代器是 `entries()` 
+* `Symbol.iterator` 引用 `entries()`
 
 使用 `forEach()` 方法可以不使用迭代器进行迭代，接收一个参数，作为回调函数（也可接收第二参数，用于重写回调函数内部 `this` 的值）
 
@@ -158,7 +161,7 @@ m.forEach((val, key) => alert(`${key} -> ${val}`));
 // key3 -> val3
 ```
 
-可以使用迭代更改 `map` 中键值对的值
+允许使用 `set()` 更改键值对的值，但不允许直接更改
 
 ```js
 const myMap = new Map();
@@ -175,6 +178,32 @@ for (const [key, value] of myMap.entries()) {
 console.log(myMap.get("age")); // 输出：31
 ```
 
+```js
+const myMap = new Map();
+myMap.set("name", "John");
+myMap.set("age", 30);
+
+for (const [key, value] of myMap.entries()) {
+  if (key === "age") {
+   	value = 31; // TypeError: Assignment to constant variable.
+  }
+}
+```
+
+无法使用迭代更改 `Map` 中键值对的键
+
+```js
+let myMap = new Map();
+myMap.set("name", "John");
+myMap.set("age", 30);
+
+for (const [key, value] of myMap.entries()) {
+  if (key === "age") {
+    key = "newAge" // TypeError: Assignment to constant variable.
+  }
+}
+```
+
 如果使用一个 `Object` 作为键值对的键，修改 `Object` 的属性并不会影响映射关系（外部的对象和 `Map` 中的对象都是对同一个地址空间的引用，修改外部的对象本身就会反映在 `Map` 内部的对象上）
 
 ```js
@@ -182,12 +211,7 @@ const obj = { name: "John" };
 const myMap = new Map();
 myMap.set(obj, 30);
 
-for (const [key, value] of myMap.entries()) {
-  if (key === obj) {
-    // 修改对象内部的属性
-    obj.name = "Jane";
-  }
-}
+obj.name = "xiaowei";
 
 console.log(myMap.get(obj)); // 输出：30
 ```
@@ -218,6 +242,18 @@ for (let pair of m[Symbol.iterator]()) {
 // [key1,val1]
 // [key2,val2]
 // [key3,val3]
+```
+
+`entries()` 是默认迭代器，可以直接对实例进行扩展，把映射转换为数组
+
+```js
+const m = new Map([
+  ["key1", "val1"],
+  ["key2", "val2"],
+  ["key3", "val3"]
+]);
+
+console.log([...m]); // [[key1,val1],[key2,val2],[key3,val3]]
 ```
 
 ### `keys()`
